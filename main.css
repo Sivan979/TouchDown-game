@@ -27,7 +27,12 @@ body{
     border-style: solid;
 }
 .game-content-div{
-
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    column-gap: 7px;
+}
+.h4{
+    border-style: solid;
 }
 .h2-second{
     margin: 0;
