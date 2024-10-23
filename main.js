@@ -5,7 +5,6 @@ const images = [
 ];
 
 const contenGenerator = () =>{
-    const rows = []; // Will store rows of blocks
 
     for(let i = 0; i < 50; i++) {
         if(i < 50){
@@ -21,8 +20,9 @@ const contenGenerator = () =>{
             gameBlock.appendChild(frontGameBlock);
             gameBlock.appendChild(backGameBlock);
 
-            
-
+            const blockNumber = (i % 5) + 1;
+            const rowNumber = Math.floor(i / 5) + 1;
+            gameBlock.setAttribute("data-block", `row${rowNumber}-block${blockNumber}`);
 
         }
     };
