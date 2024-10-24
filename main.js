@@ -28,15 +28,13 @@ function contentGenerator() {
 
             gameBlock.appendChild(frontGameBlock);
             gameBlock.appendChild(backGameBlock);
-            
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
         }
-
         gameContent.appendChild(rowDiv);
 
-        const randomBlockIndex = Math.floor(Math.random() * blocksPerRow); // Random index from 0 to 4
+        const randomBlockIndex = Math.floor(Math.random() * blocksPerRow); // This line is responsible for selecting a random block within each row where the image will be placed
         currentRowBlocks[randomBlockIndex].src = images[0].imgsrc; // Set the helmet image on the randomly selected block
     }
 }

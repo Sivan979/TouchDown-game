@@ -30,19 +30,19 @@ body{
     border-style: solid;
 }
 .game-content-div{
-    display: flex;  /* Ensures the game content area is also flex */
-    flex-direction: column; /* Aligns all rows vertically */
+    display: grid;  /* Ensures the game content area is also flex */
+    grid-template-columns: 1fr; /* Aligns all rows vertically */
     align-items: center; /* Centers rows within the game content area */
+    row-gap: 10px;
+    margin: 6px 0px;
 }
 .row{
     display: flex;
-    justify-content: center; /* Centers blocks within the row if there's extra space */
     align-items: center;
+    gap: 8px;
+    padding: 0 7px;
+}
 
-}
-.h4{
-    border-style: solid;
-}
 .h2-second{
     margin: 0;
     border-style: solid;
@@ -53,10 +53,8 @@ body{
 .game-block{
     position: relative;
     cursor: grab;
-    width: 30px; /* Fixed width for each block */
-    height: 30px; /* Fixed height for each block */
-    margin: 5px; /* Adds space between blocks */
-
+    width: 30px;
+    height: 30px;
 }
 .front-game-block ,.back-game-block{
     object-fit: contain;
