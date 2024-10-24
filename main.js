@@ -1,7 +1,8 @@
 const gameContent = document.querySelector(".game-content-div");
 const images = [ 
     {name: "helmet", imgsrc:"./images/helmet.png"},
-    {name: "ball", imgsrc:"./images/ball.avif"}
+    {name: "ball", imgsrc:"./images/ball.avif"},
+    {name: "catched-ball", imgsrc: "./images/catched-ball.jpg"}
 ];
 
 function contentGenerator() {
