@@ -31,6 +31,10 @@ function contentGenerator() {
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
+
+            gameBlock.addEventListener('click', function() {
+                handleBlockClick(frontGameBlock);
+            });
         }
         gameContent.appendChild(rowDiv);
 
@@ -38,5 +42,15 @@ function contentGenerator() {
         currentRowBlocks[randomBlockIndex].src = images[0].imgsrc; // Set the helmet image on the randomly selected block
     }
 }
+
+function handleBlockClick(frontGameBlock) {
+    if (frontGameBlock.src.includes('helmet')) {
+        // If the block has a helmet, do nothing
+        return;
+    }
+    // Set the image to the ball if no helmet
+    frontGameBlock.src = './images/ball.avif';
+}
+
 
 contentGenerator();
