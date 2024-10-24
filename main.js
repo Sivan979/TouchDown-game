@@ -4,28 +4,41 @@ const images = [
     {name: "ball", imgsrc:"./images/ball.avif"}
 ];
 
-const contenGenerator = () =>{
+function contentGenerator() {
+    const rows = 10;
+    const blocksPerRow = 5;
 
-    for(let i = 0; i < 50; i++) {
-        if(i < 50){
+    for(let rowIndex = 1; rowIndex <= rows; rowIndex++) {
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        
+        // Array to keep track of block elements in the current row
+        const currentRowBlocks = [];
+
+        for(let blockIndex = 1; blockIndex <= blocksPerRow; blockIndex++){
             const gameBlock= document.createElement("div");
             const frontGameBlock = document.createElement("img");
             const backGameBlock = document.createElement("div");
         
-            gameBlock.classList = "game-block";
-            frontGameBlock.classList = "front-game-block";
-            backGameBlock.classList = "back-game-block";
+            gameBlock.classList.add("game-block");
+            frontGameBlock.classList.add("front-game-block");
+            backGameBlock.classList.add("back-game-block");
         
-            gameContent.appendChild(gameBlock);
+            gameBlock.setAttribute("data-block", `row${rowIndex}-block${blockIndex}`);
+
             gameBlock.appendChild(frontGameBlock);
             gameBlock.appendChild(backGameBlock);
-
-            const blockNumber = (i % 5) + 1;
-            const rowNumber = Math.floor(i / 5) + 1;
-            gameBlock.setAttribute("data-block", `row${rowNumber}-block${blockNumber}`);
-
+            
+            rowDiv.appendChild(gameBlock);
+            
+            currentRowBlocks.push(frontGameBlock);
         }
-    };
-};
 
-contenGenerator();
+        gameContent.appendChild(rowDiv);
+
+        const randomBlockIndex = Math.floor(Math.random() * blocksPerRow); // Random index from 0 to 4
+        currentRowBlocks[randomBlockIndex].src = images[0].imgsrc; // Set the helmet image on the randomly selected block
+    }
+}
+
+contentGenerator();

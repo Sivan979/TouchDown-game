@@ -30,11 +30,15 @@ body{
     border-style: solid;
 }
 .game-content-div{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    column-gap: 7px;
-    row-gap: 7px;
-    padding: 5px 5px;
+    display: flex;  /* Ensures the game content area is also flex */
+    flex-direction: column; /* Aligns all rows vertically */
+    align-items: center; /* Centers rows within the game content area */
+}
+.row{
+    display: flex;
+    justify-content: center; /* Centers blocks within the row if there's extra space */
+    align-items: center;
+
 }
 .h4{
     border-style: solid;
@@ -48,9 +52,10 @@ body{
 }
 .game-block{
     position: relative;
-    width: 100%;
-    height: 30px;
     cursor: grab;
+    width: 30px; /* Fixed width for each block */
+    height: 30px; /* Fixed height for each block */
+    margin: 5px; /* Adds space between blocks */
 
 }
 .front-game-block ,.back-game-block{
