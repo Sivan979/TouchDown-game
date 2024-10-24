@@ -11,6 +11,9 @@ function contentGenerator() {
     for(let rowIndex = 1; rowIndex <= rows; rowIndex++) {
         const rowDiv = document.createElement("div");
         rowDiv.classList.add("row");
+
+        // Add an attribute to track if the ball image has been placed in this row
+        rowDiv.setAttribute("data-ball-placed", "false");
         
         // Array to keep track of block elements in the current row
         const currentRowBlocks = [];
@@ -33,7 +36,7 @@ function contentGenerator() {
             currentRowBlocks.push(frontGameBlock);
 
             gameBlock.addEventListener('click', function() {
-                handleBlockClick(frontGameBlock);
+                handleBlockClick(frontGameBlock, rowDiv);
             });
         }
         gameContent.appendChild(rowDiv);
@@ -43,13 +46,20 @@ function contentGenerator() {
     }
 }
 
-function handleBlockClick(frontGameBlock) {
+function handleBlockClick(frontGameBlock, rowDiv) {
+    // Check if a ball has already been placed in this row
+    if (rowDiv.getAttribute("data-ball-placed") === "true") {
+        return; // If yes, ignore subsequent clicks in this row
+    }
+
     if (frontGameBlock.src.includes('helmet')) {
         // If the block has a helmet, do nothing
         return;
     }
     // Set the image to the ball if no helmet
     frontGameBlock.src = './images/ball.avif';
+    // Update the row attribute to indicate a ball has been placed
+    rowDiv.setAttribute("data-ball-placed", "true");
 }
 
 
