@@ -2,8 +2,17 @@ const gameContent = document.querySelector(".game-content-div");
 const images = [ 
     {name: "helmet", imgsrc:"./images/helmet.png"},
     {name: "ball", imgsrc:"./images/ball.avif"},
-    {name: "catched-ball", imgsrc: "./images/catched-ball.jpg"}
+    {name: "catched-ball", imgsrc: "./images/catched-ball.png"}
 ];
+let gameStarted = false; // Game starts when set to true
+let gameOver = false; // Indicates whether the game is over
+let activeRowIndex = 10; // Start with the last row as the active row
+
+document.querySelector(".start-btn").addEventListener("click", function () {
+    gameStarted = true; // Set game state to started
+    document.querySelector(".start-btn").disabled = true; // Disable the start button
+});
+
 
 function contentGenerator() {
     const rows = 10;
@@ -37,7 +46,9 @@ function contentGenerator() {
             currentRowBlocks.push(frontGameBlock);
 
             gameBlock.addEventListener('click', function() {
-                handleBlockClick(frontGameBlock, rowDiv);
+                if (gameStarted && !gameOver) {
+                    handleBlockClick(frontGameBlock, rowDiv, rowIndex);
+                }            
             });
         }
         gameContent.appendChild(rowDiv);
@@ -47,20 +58,45 @@ function contentGenerator() {
     }
 }
 
-function handleBlockClick(frontGameBlock, rowDiv) {
+function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
+    if (!gameStarted || gameOver) {
+        return; // Ignore clicks if the game hasn't started or is over
+    }
+
+
+    // Check if the game is already over
+    if (gameOver) {
+        return; // Ignore clicks if the game is over
+    }
+
+    // Allow interaction only with blocks in the active row
+    if (rowIndex !== activeRowIndex) {
+        return; // Ignore clicks if the row is not active
+    }
+
     // Check if a ball has already been placed in this row
     if (rowDiv.getAttribute("data-ball-placed") === "true") {
         return; // If yes, ignore subsequent clicks in this row
     }
 
     if (frontGameBlock.src.includes('helmet')) {
+        frontGameBlock.src = './images/catched-ball.png'; // Change helmet to caught ball
+        rowDiv.setAttribute("data-ball-placed", "true"); // Mark the row as having a ball placed
         // If the block has a helmet, do nothing
+
+        // Set the game state to over
+        gameOver = true;
         return;
     }
     // Set the image to the ball if no helmet
     frontGameBlock.src = './images/ball.avif';
     // Update the row attribute to indicate a ball has been placed
     rowDiv.setAttribute("data-ball-placed", "true");
+
+    // Move to the next row above
+    if (activeRowIndex > 1) {
+        activeRowIndex--; // Decrease the active row index to allow the next row above
+    }
 }
 
 
