@@ -118,8 +118,15 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
     // Move to the next row above
     if (activeRowIndex > 1) {
         activeRowIndex--; // Decrease the active row index to allow the next row above
+    }else {
+        // Player has successfully reached the top row (won the game)
+        gameOver = true; // Set game state to over
+        gameStarted = false; // Game is no longer in play
+
+        // Re-enable the play button for a new game
+        playbtn.disabled = false;
+
+        return; // Exit the function since the game is now won
     }
 }
-
-
 contentGenerator();
