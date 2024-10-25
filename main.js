@@ -8,9 +8,27 @@ let gameStarted = false; // Game starts when set to true
 let gameOver = false; // Indicates whether the game is over
 let activeRowIndex = 10; // Start with the last row as the active row
 
-document.querySelector(".start-btn").addEventListener("click", function () {
+const playbtn = document.querySelector(".play-btn");
+playbtn.addEventListener("click", function () {
+    // Reset game state to the initial condition
+    gameStarted = true;
+    gameOver = false;
+    activeRowIndex = 10;
+
+    // Disable the play button to prevent multiple clicks while playing
+    playbtn.disabled = true;
+
+    // Clear the game area and regenerate content
+    const gameContent = document.querySelector(".game-content-div");
+    gameContent.innerHTML = ""; // Remove all the existing rows and blocks
+    contentGenerator(); // Recreate the game blocks
+});
+
+
+
+document.querySelector(".play-btn").addEventListener("click", function () {
     gameStarted = true; // Set game state to started
-    document.querySelector(".start-btn").disabled = true; // Disable the start button
+    document.querySelector(".play-btn").disabled = true; // Disable the start button
 });
 
 
@@ -86,6 +104,10 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
 
         // Set the game state to over
         gameOver = true;
+        gameStarted = false; // Game is no longer in play
+        // Re-enable the play button for a new game
+        playbtn.disabled = false;
+
         return;
     }
     // Set the image to the ball if no helmet
