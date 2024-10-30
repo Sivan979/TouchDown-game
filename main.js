@@ -10,9 +10,9 @@ const images = [
     {name: "ball", imgsrc:"./images/ball.avif"},
     {name: "catched-ball", imgsrc: "./images/catched-ball.png"}
 ];
-let gameStarted = false; // Keeps track of whether the game has started, Game starts when set to true
-let gameOver = false; // Keeps track of whether the game is finished, Indicates whether the game is over
-let activeRowIndex = 10; // Keeps track of which row is currently active, starting with row 10 (bottom row).
+let gameStarted = false;
+let gameOver = false;
+let activeRowIndex = 10;
 
 const rowMultipliers = [1.20, 1.50, 1.90, 2.40, 3.10, 4.50, 5.80, 6.90, 8.20, 10.00];
 
@@ -25,19 +25,18 @@ playbtn.addEventListener("click", function () {
     balance = 1.0;
     updateBalance();
 
-
     playbtn.disabled = true;// Disable the play button to prevent multiple clicks while playing
 
     // Clear the game area and regenerate content
-    gameContent.innerHTML = ""; // Remove all the existing rows and blocks
+    gameContent.innerHTML = "";
     contentGenerator(); // Recreate the game blocks
 });
 
 
 
 document.querySelector(".play-btn").addEventListener("click", function () {
-    gameStarted = true; // Set game state to started
-    document.querySelector(".play-btn").disabled = true; // Disable the start button
+    gameStarted = true;
+    document.querySelector(".play-btn").disabled = true;
 });
 
 
@@ -84,8 +83,8 @@ function contentGenerator() {
             });
         }
         
-        const randomBlockIndex = Math.floor(Math.random() * blocksPerRow); // This line is responsible for selecting a random block within each row where the image will be placed
-        currentRowBlocks[randomBlockIndex].src = images[0].imgsrc; // Set the helmet image on the randomly selected block
+        const randomBlockIndex = Math.floor(Math.random() * blocksPerRow);
+        currentRowBlocks[randomBlockIndex].src = images[0].imgsrc;
     }
 }
 
@@ -129,25 +128,20 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
 
     
     // Update balance after successfully placing the ball in the current row
-    const currentRewardIndex = 10 - activeRowIndex; // Reward index based on the row
-
-    // Ensure we stay within bounds and update balance properly
+    const currentRewardIndex = 10 - activeRowIndex;
     if (currentRewardIndex <= rowMultipliers.length) {
-        balance = 1.00 * rowMultipliers[currentRewardIndex ]; // Apply the corresponding multiplier without compounding
-        updateBalance(); // Update balance on screen
+        balance = 1.00 * rowMultipliers[currentRewardIndex];
+        updateBalance();
     }
 
     // Move to the next row above
     if (activeRowIndex > 1) {
-        activeRowIndex--; // Decrease the active row index to allow the next row above
+        activeRowIndex--;
     }else {
         // Player has successfully reached the top row (won the game)
-        gameOver = true; // Set game state to over
-        gameStarted = false; // Game is no longer in play
-
-        // Re-enable the play button for a new game
+        gameOver = true;
+        gameStarted = false;
         playbtn.disabled = false;
-
         return; // Exit the function since the game is now won
     }
 
