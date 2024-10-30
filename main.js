@@ -1,9 +1,13 @@
 const gameContent = document.querySelector(".game-content-div");
 const playbtn = document.querySelector(".play-btn");
 
-const balanceElement = document.querySelector(".balance");
-let balance = 1.00;
+const betAmountElm = document.querySelector(".bet-amount");
+const minusBtn = document.querySelector(".minus-btn");
+const plusBtn = document.querySelector(".plus-btn");
 
+
+const balanceElement = document.querySelector(".balance");
+let balance = 5.00;
 
 const images = [ 
     {name: "helmet", imgsrc:"./images/helmet.png"},
@@ -15,6 +19,29 @@ let gameOver = false;
 let activeRowIndex = 10;
 
 const rowMultipliers = [1.20, 1.50, 1.90, 2.40, 3.10, 4.50, 5.80, 6.90, 8.20, 10.00];
+const betAmounts = [0.20, 0.40, 0.60, 1.00, 1.50, 2.00, 3.00, 4.00, 5.00, 7.00, 10.00, 15.00, 20.00, 30.00, 40.00, 50.00, 70.00, 100.00];
+let currentBetIndex = 0;
+
+
+
+
+function updateBetAmount() {
+    betAmountElm.innerHTML = `${betAmounts[currentBetIndex].toFixed(2)} EUR`;
+}  
+plusBtn.addEventListener("click", function(){
+    if (currentBetIndex < betAmounts.length - 1) {
+        currentBetIndex++;
+        updateBetAmount();
+      }
+});
+minusBtn.addEventListener("click", function(){
+    if (currentBetIndex > 0) {
+        currentBetIndex--;
+        updateBetAmount();
+      }
+});
+updateBetAmount();
+
 
 
 playbtn.addEventListener("click", function () {
@@ -22,7 +49,7 @@ playbtn.addEventListener("click", function () {
     gameStarted = true;
     gameOver = false;
     activeRowIndex = 10;
-    balance = 1.0;
+    balance = 5.0;
     updateBalance();
 
     playbtn.disabled = true;// Disable the play button to prevent multiple clicks while playing
@@ -130,7 +157,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
     // Update balance after successfully placing the ball in the current row
     const currentRewardIndex = 10 - activeRowIndex;
     if (currentRewardIndex <= rowMultipliers.length) {
-        balance = 1.00 * rowMultipliers[currentRewardIndex];
+        balance = 5.00 * rowMultipliers[currentRewardIndex];
         updateBalance();
     }
 
