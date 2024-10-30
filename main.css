@@ -2,6 +2,8 @@ body{
     background-image: linear-gradient(to right, rgb(86, 147, 32), rgb(245, 159, 0));
     display: flex;
     justify-content: center;
+    margin-top: 30px;
+    margin-left: 230px;
 }
 .main-container{
     background-color: rgba(48, 0, 93, 0.322);
@@ -66,4 +68,18 @@ body{
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.401);
 }
 .back-game-block{
+}
+
+
+.player-info-container{
+    background-color: rgba(53, 0, 103, 0.281);
+    height: 100px;
+    padding: 20px;
+    border-radius: 50px;
+    margin-left: 20px;
+}
+.balance, .balance-text{
+    font-size: 28px;
+    font-family: arial;
+    font-weight: 600;
 }
