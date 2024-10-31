@@ -18,8 +18,8 @@ let gameStarted = false;
 let gameOver = false;
 let activeRowIndex = 10;
 let balance = 5.00;
-let currentMultiplier = 1.0;
-let currentBetIndex = 0;
+let currentMultiplier = 0;
+let currentBetIndex = 3;
 
 
 
@@ -31,42 +31,15 @@ plusBtn.addEventListener("click", function(){
     if (currentBetIndex < betAmounts.length - 1) {
         currentBetIndex++;
         updateBetAmount();
-      }
+    }
 });
 minusBtn.addEventListener("click", function(){
     if (currentBetIndex > 0) {
         currentBetIndex--;
         updateBetAmount();
-      }
+    }
 });
 updateBetAmount();
-
-
-
-playbtn.addEventListener("click", function () {
-    // Reset game state to the initial condition
-    gameStarted = true;
-    gameOver = false;
-    activeRowIndex = 10;
-    currentMultiplier = 1.0;
-
-    balance = 5.0;
-    updateBalance();
-    updateProfit(currentMultiplier);
-
-    playbtn.disabled = true;// Disable the play button to prevent multiple clicks while playing
-
-    // Clear the game area and regenerate content
-    gameContent.innerHTML = "";
-    contentGenerator(); // Recreate the game blocks
-});
-
-
-
-document.querySelector(".play-btn").addEventListener("click", function () {
-    gameStarted = true;
-    document.querySelector(".play-btn").disabled = true;
-});
 
 
 
@@ -75,8 +48,26 @@ function updateBalance() {
 }
 
 function updateProfit(multiplier) {
-    profitElement.innerHTML = `Profits: x${multiplier.toFixed(2)}`;
-  }
+    profitElement.innerHTML = `Profits: ${multiplier.toFixed(2)}`;
+}
+
+playbtn.addEventListener("click", function () {
+    // Reset game state to the initial condition
+    gameStarted = true;
+    gameOver = false;
+    activeRowIndex = 10;
+    currentMultiplier = 0;
+    balance = 5.0;
+    updateBalance();
+    updateProfit(currentMultiplier);
+    playbtn.disabled = true;
+    // Clear the game area and regenerate content
+    gameContent.innerHTML = "";
+    contentGenerator(); // Recreate the game blocks
+});
+updateProfit(currentMultiplier);
+
+
 
 function contentGenerator() {
     const rows = 10;
@@ -89,7 +80,6 @@ function contentGenerator() {
 
         // Add an attribute to track if the ball image has been placed in this row
         rowDiv.setAttribute("data-ball-placed", "false");
-        
         // Array to keep track of block elements in the current row
         const currentRowBlocks = [];
 
@@ -127,11 +117,11 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
         return; // Ignore clicks if the game hasn't started or is over
     }
 
-
-    // Check if the game is already over
+    /*just comment outted this to write on paper using bolean withh if
     if (gameOver) {
-        return; // Ignore clicks if the game is over
+        return;
     }
+    */
 
     // Allow interaction only with blocks in the active row
     if (rowIndex !== activeRowIndex) {
