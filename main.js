@@ -20,8 +20,7 @@ let activeRowIndex = 10;
 let balance = 5.00;
 let currentMultiplier = 0;
 let currentBetIndex = 3;
-
-
+let newBalance = 0;
 
 
 function updateBetAmount() {
@@ -44,20 +43,28 @@ updateBetAmount();
 
 
 function updateBalance() {
-    balanceElement.innerHTML = `Balance: €${balance.toFixed(2)}`;
-}
+    if(gameStarted === false){
+        balanceElement.innerHTML = `Balance: €${balance.toFixed(2)}`;
+    }else if (gameStarted === true){
+        balanceElement.innerHTML = `Balance: €${newBalance.toFixed(2)}`;
+    }
+};
 
 function updateProfit(profits) {
     profitElement.innerHTML = `Profits: ${profits.toFixed(2)}`;
 }
 
 playbtn.addEventListener("click", function () {
+    if(balance < betAmounts[currentBetIndex]){
+        alert("no enugh balance");
+        return;
+    }
     // Reset game state to the initial condition
     gameStarted = true;
     gameOver = false;
     activeRowIndex = 10;
     currentMultiplier = 0;
-    balance = 5.0;
+    newBalance = balance - betAmounts[currentBetIndex];
     updateBalance();
     updateProfit(currentMultiplier);
     playbtn.disabled = true;
