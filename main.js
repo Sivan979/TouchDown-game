@@ -47,8 +47,8 @@ function updateBalance() {
     balanceElement.innerHTML = `Balance: €${balance.toFixed(2)}`;
 }
 
-function updateProfit(multiplier) {
-    profitElement.innerHTML = `Profits: ${multiplier.toFixed(2)}`;
+function updateProfit(profits) {
+    profitElement.innerHTML = `Profits: ${profits.toFixed(2)}`;
 }
 
 playbtn.addEventListener("click", function () {
@@ -61,6 +61,8 @@ playbtn.addEventListener("click", function () {
     updateBalance();
     updateProfit(currentMultiplier);
     playbtn.disabled = true;
+    minusBtn.disabled = true;
+    plusBtn.disabled = true;
     // Clear the game area and regenerate content
     gameContent.innerHTML = "";
     contentGenerator(); // Recreate the game blocks
@@ -140,6 +142,8 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
         gameOver = true;
         gameStarted = false;
         playbtn.disabled = false;
+        minusBtn.disabled = false;
+        plusBtn.disabled = false;
         return;
     } else {
         frontGameBlock.src = './images/ball.avif';
@@ -147,10 +151,11 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
     }
     
     // Update balance after successfully placing the ball in the current row
+    let profits;
     const currentRewardIndex = 10 - activeRowIndex;
     if (currentRewardIndex <= rowMultipliers.length) {
-        currentMultiplier = rowMultipliers[currentRewardIndex];
-        updateProfit(currentMultiplier);
+        profits = betAmounts[currentBetIndex] * rowMultipliers[currentRewardIndex];
+        updateProfit(profits);
     }
 
     // Move to the next row above
@@ -161,6 +166,8 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
         gameOver = true;
         gameStarted = false;
         playbtn.disabled = false;
+        minusBtn.disabled = false;
+        plusBtn.disabled = false;
         return;
     }
 
