@@ -125,31 +125,26 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
 
     // Allow interaction only with blocks in the active row
     if (rowIndex !== activeRowIndex) {
-        return; // Ignore clicks if the row is not active
+        return;
     }
 
     // Check if a ball has already been placed in this row
     if (rowDiv.getAttribute("data-ball-placed") === "true") {
-        return; // If yes, ignore subsequent clicks in this row
+        return;
     }
 
     if (frontGameBlock.src.includes('helmet')) {
-        frontGameBlock.src = './images/catched-ball.png'; // Change helmet to caught ball
-        rowDiv.setAttribute("data-ball-placed", "true"); // Mark the row as having a ball placed
+        frontGameBlock.src = './images/catched-ball.png';
+        rowDiv.setAttribute("data-ball-placed", "true");
 
-        // Set the game state to over
         gameOver = true;
-        gameStarted = false; // Game is no longer in play
-        // Re-enable the play button for a new game
+        gameStarted = false;
         playbtn.disabled = false;
-
         return;
+    } else {
+        frontGameBlock.src = './images/ball.avif';
+        rowDiv.setAttribute("data-ball-placed", "true");
     }
-    // Set the image to the ball if no helmet
-    frontGameBlock.src = './images/ball.avif';
-    // Update the row attribute to indicate a ball has been placed
-    rowDiv.setAttribute("data-ball-placed", "true");
-
     
     // Update balance after successfully placing the ball in the current row
     const currentRewardIndex = 10 - activeRowIndex;
@@ -166,7 +161,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
         gameOver = true;
         gameStarted = false;
         playbtn.disabled = false;
-        return; // Exit the function since the game is now won
+        return;
     }
 
 
