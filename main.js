@@ -6,7 +6,9 @@ const plusBtn = document.querySelector(".plus-btn");
 const profitElement = document.querySelector(".profit");
 const balanceElement = document.querySelector(".balance");
 const cashOutBtn = document.querySelector(".cash-out-btn");
-
+const bigBtn = document.querySelector(".big-btn");
+const mediumBtn = document.querySelector(".medium-btn");
+const smallBtn = document.querySelector(".small-btn");
 const images = [ 
     {name: "helmet", imgsrc:"./images/helmet.png"},
     {name: "ball", imgsrc:"./images/ball.avif"},
@@ -23,6 +25,9 @@ let currentMultiplier = 0;
 let currentBetIndex = 3;
 let newBalance = 0;
 let profits;
+let bigFieldCreated = "false";
+let mediumFieldCreated = "false";
+let smallFieldCreated = "false";
 
 cashOutBtn.disabled = true;
 if(gameStarted === true){
@@ -57,26 +62,115 @@ function updateProfit(profits) {
     profitElement.innerHTML = `Profits: ${profits.toFixed(2)}`;
 }
 
-playbtn.addEventListener("click", function () {
-    if(balance < betAmounts[currentBetIndex]){
-        alert("no enugh balance");
+
+
+bigBtn.addEventListener("click", function(){
+    if(smallFieldCreated === "true"){
+        gameContent.innerHTML = "";
+        contentGenerator();
+        smallFieldCreated = "false";
+        mediumFieldCreated = "false";
+        bigFieldCreated = "true";
         return;
     }
-    // Reset game state to the initial condition
-    gameStarted = true;
-    gameOver = false;
-    activeRowIndex = 10;
-    currentMultiplier = 0;
-    balance = balance - betAmounts[currentBetIndex];
-    updateBalance();
-    updateProfit(currentMultiplier);
-    playbtn.disabled = true;
-    minusBtn.disabled = true;
-    plusBtn.disabled = true;
-    // Clear the game area and regenerate content
-    gameContent.innerHTML = "";
-    contentGenerator(); // Recreate the game blocks
+    if(mediumFieldCreated === "true"){
+        gameContent.innerHTML = "";
+        contentGenerator();
+        mediumFieldCreated = "false";
+        smallFieldCreated = "false";
+        bigFieldCreated = "true";
+        return;
+    }
+    if(bigFieldCreated === "true"){
+        return;
+    }
+    if (bigFieldCreated === "false"){
+        contentGenerator();
+        bigFieldCreated = "true";
+        return;
+    }  
 });
+
+
+mediumBtn.addEventListener("click", function(){
+    if(bigFieldCreated === "true"){
+        gameContent.innerHTML = "";
+        mediumBtnF();
+        smallFieldCreated = "false";
+        bigFieldCreated = "false";
+        mediumFieldCreated = "true";
+        return;
+    }
+    if(smallFieldCreated === "true"){
+        gameContent.innerHTML = "";
+        mediumBtnF();
+        smallFieldCreated = "false";
+        bigFieldCreated = "false";
+        mediumFieldCreated = "true";
+        return;
+    }   
+    if(mediumFieldCreated === "true"){
+        return;
+    }
+    if (mediumFieldCreated === "false"){
+        gameContent.innerHTML = "";
+        mediumBtnF();
+        mediumFieldCreated = "true";
+    }  
+});
+
+
+smallBtn.addEventListener("click", function(){
+    if (bigFieldCreated === "true"){
+        gameContent.innerHTML = "";
+        smallBtnF();
+        bigFieldCreated = "false";
+        mediumFieldCreated = "false";
+        smallFieldCreated = "true";
+        return;
+    }
+    if(mediumFieldCreated === "true"){
+        gameContent.innerHTML = "";
+        smallBtnF();
+        bigFieldCreated = "false";
+        mediumFieldCreated = "false";
+        smallFieldCreated = "true";
+        return;
+    }
+    if(smallFieldCreated === "true"){
+        return;
+    }
+    if (smallFieldCreated === "false"){
+        smallFieldCreated = "true";
+        smallBtnF();
+        return;
+    }
+});
+
+
+
+function playBtnF(){
+    playbtn.addEventListener("click", function () {
+        if(balance < betAmounts[currentBetIndex]){
+            alert("no enugh balance");
+            return;
+        }
+        // Reset game state to the initial condition
+        gameStarted = true;
+        gameOver = false;
+        activeRowIndex = 10;
+        currentMultiplier = 0;
+        balance = balance - betAmounts[currentBetIndex];
+        updateBalance();
+        updateProfit(currentMultiplier);
+        playbtn.disabled = true;
+        minusBtn.disabled = true;
+        plusBtn.disabled = true;
+        // Clear the game area and regenerate content
+        gameContent.innerHTML = "";
+    });
+};
+
 updateProfit(currentMultiplier);
 
 
@@ -95,6 +189,93 @@ cashOutBtn.addEventListener("click", function(){
 });
 
 
+function smallBtnF(){
+    const rows = 5;
+    const blocksPerRow = 3;
+
+    for(let rowIndex = 1; rowIndex <= rows; rowIndex++) {
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        gameContent.appendChild(rowDiv);
+
+        // Add an attribute to track if the ball image has been placed in this row
+        rowDiv.setAttribute("data-ball-placed", "false");
+        // Array to keep track of block elements in the current row
+        const currentRowBlocks = [];
+
+        for(let blockIndex = 1; blockIndex <= blocksPerRow; blockIndex++){
+            const gameBlock= document.createElement("div");
+            const frontGameBlock = document.createElement("img");
+            const backGameBlock = document.createElement("div");
+        
+            gameBlock.classList.add("game-block");
+            frontGameBlock.classList.add("front-game-block");
+            backGameBlock.classList.add("back-game-block");
+        
+            gameBlock.setAttribute("data-block", `row${rowIndex}-block${blockIndex}`);
+
+            gameBlock.appendChild(frontGameBlock);
+            gameBlock.appendChild(backGameBlock);
+            rowDiv.appendChild(gameBlock);
+            
+            currentRowBlocks.push(frontGameBlock);
+
+            gameBlock.addEventListener('click', function() {
+                if (gameStarted && !gameOver) {
+                    handleBlockClick(frontGameBlock, rowDiv, rowIndex);
+                }
+            });
+        }
+        
+        const randomBlockIndex = Math.floor(Math.random() * blocksPerRow);
+        currentRowBlocks[randomBlockIndex].src = images[0].imgsrc;
+    }
+};
+
+
+
+function mediumBtnF(){
+    const rows = 8;
+    const blocksPerRow = 4;
+
+    for(let rowIndex = 1; rowIndex <= rows; rowIndex++) {
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("row");
+        gameContent.appendChild(rowDiv);
+
+        // Add an attribute to track if the ball image has been placed in this row
+        rowDiv.setAttribute("data-ball-placed", "false");
+        // Array to keep track of block elements in the current row
+        const currentRowBlocks = [];
+
+        for(let blockIndex = 1; blockIndex <= blocksPerRow; blockIndex++){
+            const gameBlock= document.createElement("div");
+            const frontGameBlock = document.createElement("img");
+            const backGameBlock = document.createElement("div");
+        
+            gameBlock.classList.add("game-block");
+            frontGameBlock.classList.add("front-game-block");
+            backGameBlock.classList.add("back-game-block");
+        
+            gameBlock.setAttribute("data-block", `row${rowIndex}-block${blockIndex}`);
+
+            gameBlock.appendChild(frontGameBlock);
+            gameBlock.appendChild(backGameBlock);
+            rowDiv.appendChild(gameBlock);
+            
+            currentRowBlocks.push(frontGameBlock);
+
+            gameBlock.addEventListener('click', function() {
+                if (gameStarted && !gameOver) {
+                    handleBlockClick(frontGameBlock, rowDiv, rowIndex);
+                }
+            });
+        }
+        
+        const randomBlockIndex = Math.floor(Math.random() * blocksPerRow);
+        currentRowBlocks[randomBlockIndex].src = images[0].imgsrc;
+    }
+};
 
 
 function contentGenerator() {
@@ -138,6 +319,7 @@ function contentGenerator() {
         const randomBlockIndex = Math.floor(Math.random() * blocksPerRow);
         currentRowBlocks[randomBlockIndex].src = images[0].imgsrc;
     }
+
 }
 
 function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
@@ -207,4 +389,3 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
 
 
 }
-contentGenerator();
