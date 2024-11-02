@@ -5,6 +5,7 @@ const minusBtn = document.querySelector(".minus-btn");
 const plusBtn = document.querySelector(".plus-btn");
 const profitElement = document.querySelector(".profit");
 const balanceElement = document.querySelector(".balance");
+const cashOutBtn = document.querySelector(".cash-out-btn");
 
 const images = [ 
     {name: "helmet", imgsrc:"./images/helmet.png"},
@@ -21,7 +22,12 @@ let balance = 5.00;
 let currentMultiplier = 0;
 let currentBetIndex = 3;
 let newBalance = 0;
+let profits;
 
+cashOutBtn.disabled = true;
+if(gameStarted === true){
+    cashOutBtn.disabled = false;
+}
 
 function updateBetAmount() {
     betAmountElm.innerHTML = `${betAmounts[currentBetIndex].toFixed(2)} EUR`;
@@ -43,11 +49,8 @@ updateBetAmount();
 
 
 function updateBalance() {
-    if(gameStarted === false){
-        balanceElement.innerHTML = `Balance: €${balance.toFixed(2)}`;
-    }else if (gameStarted === true){
-        balanceElement.innerHTML = `Balance: €${newBalance.toFixed(2)}`;
-    }
+    balanceElement.innerHTML = `Balance: €${balance.toFixed(2)}`;
+
 };
 
 function updateProfit(profits) {
@@ -64,7 +67,7 @@ playbtn.addEventListener("click", function () {
     gameOver = false;
     activeRowIndex = 10;
     currentMultiplier = 0;
-    newBalance = balance - betAmounts[currentBetIndex];
+    balance = balance - betAmounts[currentBetIndex];
     updateBalance();
     updateProfit(currentMultiplier);
     playbtn.disabled = true;
@@ -75,6 +78,22 @@ playbtn.addEventListener("click", function () {
     contentGenerator(); // Recreate the game blocks
 });
 updateProfit(currentMultiplier);
+
+
+cashOutBtn.addEventListener("click", function(){
+    if(cashOutBtn.disabled === false){
+        gameOver = true;
+        gameStarted =false;
+        balance = balance + profits;
+        playbtn.disabled = false;
+        minusBtn.disabled = false;
+        plusBtn.disabled = false;
+        cashOutBtn.disabled = true;
+        updateBalance();
+
+    }
+});
+
 
 
 
@@ -151,14 +170,18 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
         playbtn.disabled = false;
         minusBtn.disabled = false;
         plusBtn.disabled = false;
+        cashOutBtn.disabled = true;
+
         return;
     } else {
         frontGameBlock.src = './images/ball.avif';
         rowDiv.setAttribute("data-ball-placed", "true");
+        cashOutBtn.disabled = false;
+        
     }
     
     // Update balance after successfully placing the ball in the current row
-    let profits;
+    
     const currentRewardIndex = 10 - activeRowIndex;
     if (currentRewardIndex <= rowMultipliers.length) {
         profits = betAmounts[currentBetIndex] * rowMultipliers[currentRewardIndex];
@@ -175,6 +198,9 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
         playbtn.disabled = false;
         minusBtn.disabled = false;
         plusBtn.disabled = false;
+        balance = balance + profits;
+        cashOutBtn.disabled = true;
+        updateBalance();
         return;
     }
 
