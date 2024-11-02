@@ -7,15 +7,22 @@ body{
 }
 .main-container{
     background-color: rgba(48, 0, 93, 0.322);
-    padding: 30px 50px;
-    display: flex;
-    gap: 10px;
+    padding: 30px 25px 30px 50px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0px;
     border-radius: 30px;
+}
+.submain-container{
+    display: grid;
+    grid-template-columns: 1fr 46px;
+    gap: 8px;
 }
 .h1{
     padding:0;
     margin: 0;
     font-family: Arial;
+    text-align: center;
 }
 .section{
     background-color: rgba(165, 42, 42, 0.507);
@@ -76,6 +83,7 @@ body{
     padding: 20px;
     border-radius: 50px;
     margin-left: 20px;
+    cursor: default;
 }
 .balance{
     font-size: 28px;
@@ -99,34 +107,43 @@ body{
     background-color: rgb(209, 209, 209);
 }
 
-.play-btn{
-    margin-top: 9px;
-    width: 100%;
-}
 
 .x-container{
     margin-top: 71px;
-    padding: 10px 0px 10px 2px;
-    width: 33px;
-    gap: 23px;
+    padding: 12px 0px 12px 0px;
+    width: 25px;
+    gap: 26px;
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    border: 1.2px solid black;
     border-radius: 20px;
+    align-items: center;
 
 }
 .x-container p{
     margin: 0;
     padding: 0;
     font-family: arial;
-    font-size: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor:default;
 
 }
 .cash-out-btn{
-    margin-top: 25px;
-    padding: 19px 3px;
+    padding: 8px 5px;
     border-radius: 50%;
     border-style: solid;
     border-width: 0.5px;
     cursor: pointer;
+    
+}
+.play-btn{
+    cursor: pointer;   
+}
+.btn-container{
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    gap: 5px;
+    justify-content: center;
+    align-items:center;
 }
