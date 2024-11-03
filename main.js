@@ -20,6 +20,9 @@ const betAmounts = [0.20, 0.40, 0.60, 1.00, 1.50, 2.00, 3.00, 4.00, 5.00, 7.00, 
 let gameStarted = false;
 let gameOver = false;
 let activeRowIndex = 10;
+let activeRowIndexS = 5;
+let activeRowIndexM = 8;
+
 let balance = 5.00;
 let currentMultiplier = 0;
 let currentBetIndex = 3;
@@ -65,19 +68,11 @@ function updateProfit(profits) {
 
 
 bigBtn.addEventListener("click", function(){
-    if(smallFieldCreated === "true"){
+    if(smallFieldCreated === "true" || mediumFieldCreated === "true"){
         gameContent.innerHTML = "";
         contentGenerator();
         smallFieldCreated = "false";
         mediumFieldCreated = "false";
-        bigFieldCreated = "true";
-        return;
-    }
-    if(mediumFieldCreated === "true"){
-        gameContent.innerHTML = "";
-        contentGenerator();
-        mediumFieldCreated = "false";
-        smallFieldCreated = "false";
         bigFieldCreated = "true";
         return;
     }
@@ -93,7 +88,7 @@ bigBtn.addEventListener("click", function(){
 
 
 mediumBtn.addEventListener("click", function(){
-    if(bigFieldCreated === "true"){
+    if(bigFieldCreated === "true" || smallFieldCreated === "true"){
         gameContent.innerHTML = "";
         mediumBtnF();
         smallFieldCreated = "false";
@@ -101,14 +96,6 @@ mediumBtn.addEventListener("click", function(){
         mediumFieldCreated = "true";
         return;
     }
-    if(smallFieldCreated === "true"){
-        gameContent.innerHTML = "";
-        mediumBtnF();
-        smallFieldCreated = "false";
-        bigFieldCreated = "false";
-        mediumFieldCreated = "true";
-        return;
-    }   
     if(mediumFieldCreated === "true"){
         return;
     }
@@ -121,15 +108,7 @@ mediumBtn.addEventListener("click", function(){
 
 
 smallBtn.addEventListener("click", function(){
-    if (bigFieldCreated === "true"){
-        gameContent.innerHTML = "";
-        smallBtnF();
-        bigFieldCreated = "false";
-        mediumFieldCreated = "false";
-        smallFieldCreated = "true";
-        return;
-    }
-    if(mediumFieldCreated === "true"){
+    if (bigFieldCreated === "true" || mediumFieldCreated === "true"){
         gameContent.innerHTML = "";
         smallBtnF();
         bigFieldCreated = "false";
@@ -149,12 +128,12 @@ smallBtn.addEventListener("click", function(){
 
 
 
-function playBtnF(){
-    playbtn.addEventListener("click", function () {
-        if(balance < betAmounts[currentBetIndex]){
-            alert("no enugh balance");
-            return;
-        }
+playbtn.addEventListener("click", function () {
+    if(balance < betAmounts[currentBetIndex]){
+        alert("no enugh balance");
+        return;
+    }
+    if(bigFieldCreated === "true"){
         // Reset game state to the initial condition
         gameStarted = true;
         gameOver = false;
@@ -167,10 +146,25 @@ function playBtnF(){
         minusBtn.disabled = true;
         plusBtn.disabled = true;
         // Clear the game area and regenerate content
-        gameContent.innerHTML = "";
-    });
-};
-
+        gameContent.innerHTML= "";
+        contentGenerator();
+    } else if (mediumFieldCreated === "true"){
+        gameStarted = true;
+        gameOver = false;
+        activeRowIndexM = 8;
+        currentMultiplier = 0;
+        balance = balance - betAmounts[currentBetIndex];
+        updateBalance();
+        updateProfit(currentMultiplier);
+        playbtn.disabled = true;
+        minusBtn.disabled = true;
+        plusBtn.disabled = true;
+        // Clear the game area and regenerate content
+        gameContent.innerHTML= "";
+        mediumBtnF();
+    }
+    
+});
 updateProfit(currentMultiplier);
 
 
@@ -219,9 +213,10 @@ function smallBtnF(){
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
-
+            console.log("befor gameblock");
             gameBlock.addEventListener('click', function() {
                 if (gameStarted && !gameOver) {
+                    console.log("inside if ");
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
                 }
             });
@@ -264,6 +259,7 @@ function mediumBtnF(){
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
+            console.log("befor gameblock");
 
             gameBlock.addEventListener('click', function() {
                 if (gameStarted && !gameOver) {
@@ -308,9 +304,12 @@ function contentGenerator() {
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
+            console.log("befor gameblock");
 
             gameBlock.addEventListener('click', function() {
+                console.log("inside gameblock");
                 if (gameStarted && !gameOver) {
+                    console.log("gig");
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
                 }
             });
@@ -323,67 +322,128 @@ function contentGenerator() {
 }
 
 function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
-    if (!gameStarted || gameOver) {
-        return; // Ignore clicks if the game hasn't started or is over
+    if (bigFieldCreated === "true"){
+        bigFieldRules();
+    }
+    if(mediumFieldCreated === "true"){
+        mediumFieldRules();
     }
 
-    /*just comment outted this to write on paper using bolean withh if
-    if (gameOver) {
-        return;
+    function mediumFieldRules(){
+        if (!gameStarted || gameOver) {
+            return; // Ignore clicks if the game hasn't started or is over
+        }
+        if (rowIndex !== activeRowIndexM) {
+            return;
+        }
+        if (rowDiv.getAttribute("data-ball-placed") === "true") {
+            return;
+        }
+
+        if (frontGameBlock.src.includes('helmet')) {
+            frontGameBlock.src = './images/catched-ball.png';
+            rowDiv.setAttribute("data-ball-placed", "true");
+
+            gameOver = true;
+            gameStarted = false;
+            playbtn.disabled = false;
+            minusBtn.disabled = false;
+            plusBtn.disabled = false;
+            cashOutBtn.disabled = true;
+
+            return;
+        } else {
+            frontGameBlock.src = './images/ball.avif';
+            rowDiv.setAttribute("data-ball-placed", "true");
+            cashOutBtn.disabled = false;
+            
+        }
+        const currentRewardIndex = 8 - activeRowIndexM;
+        if (currentRewardIndex <= rowMultipliers.length) {
+            profits = betAmounts[currentBetIndex] * rowMultipliers[currentRewardIndex];
+            updateProfit(profits);
+        }
+
+        // Move to the next row above
+        if (activeRowIndexM > 1) {
+            activeRowIndexM--;
+        }else {
+            // Player has successfully reached the top row (won the game)
+            gameOver = true;
+            gameStarted = false;
+            playbtn.disabled = false;
+            minusBtn.disabled = false;
+            plusBtn.disabled = false;
+            balance = balance + profits;
+            cashOutBtn.disabled = true;
+            updateBalance();
+            return;
+        }
     }
-    */
 
-    // Allow interaction only with blocks in the active row
-    if (rowIndex !== activeRowIndex) {
-        return;
-    }
+    function bigFieldRules(){
+        if (!gameStarted || gameOver) {
+            return; // Ignore clicks if the game hasn't started or is over
+        }
 
-    // Check if a ball has already been placed in this row
-    if (rowDiv.getAttribute("data-ball-placed") === "true") {
-        return;
-    }
+        /*just comment outted this to write on paper using bolean withh if
+        if (gameOver) {
+            return;
+        }
+        */
 
-    if (frontGameBlock.src.includes('helmet')) {
-        frontGameBlock.src = './images/catched-ball.png';
-        rowDiv.setAttribute("data-ball-placed", "true");
-
-        gameOver = true;
-        gameStarted = false;
-        playbtn.disabled = false;
-        minusBtn.disabled = false;
-        plusBtn.disabled = false;
-        cashOutBtn.disabled = true;
-
-        return;
-    } else {
-        frontGameBlock.src = './images/ball.avif';
-        rowDiv.setAttribute("data-ball-placed", "true");
-        cashOutBtn.disabled = false;
+        // Allow interaction only with blocks in the active row
+        if (rowIndex !== activeRowIndex) {
+            return;
+        }
         
-    }
-    
-    // Update balance after successfully placing the ball in the current row
-    
-    const currentRewardIndex = 10 - activeRowIndex;
-    if (currentRewardIndex <= rowMultipliers.length) {
-        profits = betAmounts[currentBetIndex] * rowMultipliers[currentRewardIndex];
-        updateProfit(profits);
-    }
+        // Check if a ball has already been placed in this row
+        if (rowDiv.getAttribute("data-ball-placed") === "true") {
+            return;
+        }
 
-    // Move to the next row above
-    if (activeRowIndex > 1) {
-        activeRowIndex--;
-    }else {
-        // Player has successfully reached the top row (won the game)
-        gameOver = true;
-        gameStarted = false;
-        playbtn.disabled = false;
-        minusBtn.disabled = false;
-        plusBtn.disabled = false;
-        balance = balance + profits;
-        cashOutBtn.disabled = true;
-        updateBalance();
-        return;
+        if (frontGameBlock.src.includes('helmet')) {
+            frontGameBlock.src = './images/catched-ball.png';
+            rowDiv.setAttribute("data-ball-placed", "true");
+
+            gameOver = true;
+            gameStarted = false;
+            playbtn.disabled = false;
+            minusBtn.disabled = false;
+            plusBtn.disabled = false;
+            cashOutBtn.disabled = true;
+
+            return;
+        } else {
+            frontGameBlock.src = './images/ball.avif';
+            rowDiv.setAttribute("data-ball-placed", "true");
+            cashOutBtn.disabled = false;
+            
+        }
+        
+        // Update balance after successfully placing the ball in the current row
+        
+        const currentRewardIndex = 10 - activeRowIndex;
+        if (currentRewardIndex <= rowMultipliers.length) {
+            profits = betAmounts[currentBetIndex] * rowMultipliers[currentRewardIndex];
+            updateProfit(profits);
+        }
+
+        // Move to the next row above
+        if (activeRowIndex > 1) {
+            activeRowIndex--;
+        }else {
+            // Player has successfully reached the top row (won the game)
+            gameOver = true;
+            gameStarted = false;
+            playbtn.disabled = false;
+            minusBtn.disabled = false;
+            plusBtn.disabled = false;
+            balance = balance + profits;
+            cashOutBtn.disabled = true;
+            updateBalance();
+            return;
+        }
     }
 
 
