@@ -9,6 +9,8 @@ const cashOutBtn = document.querySelector(".cash-out-btn");
 const bigBtn = document.querySelector(".big-btn");
 const mediumBtn = document.querySelector(".medium-btn");
 const smallBtn = document.querySelector(".small-btn");
+const xContainer = document.querySelector(".x-container");
+
 const images = [ 
     {name: "helmet", imgsrc:"./images/helmet.png"},
     {name: "ball", imgsrc:"./images/ball.avif"},
@@ -18,6 +20,9 @@ const rowMultipliers = [1.20, 1.50, 1.90, 2.40, 3.10, 4.50, 5.80, 6.90, 8.20, 10
 const mediumRowMultipliers = [1.30, 1.70, 2.30, 3.00, 4.00, 5.30, 7.10, 9.50];
 const smallRowMultipliers = [1.40, 2.10, 3.20, 4.80, 7.20];
 const betAmounts = [0.20, 0.40, 0.60, 1.00, 1.50, 2.00, 3.00, 4.00, 5.00, 7.00, 10.00, 15.00, 20.00, 30.00, 40.00, 50.00, 70.00, 100.00];
+const bigFieldX = ["x10","x8.2","x6.9","x5.8","x4.5","x3.1","x2.4", "x1.9","x1.5" ,"x1.2"];
+const mediumFieldX = ["x9.5", "x7.1", "x5.3", "x4.0", "x3.0", "x2.3", "x1.7", "x1.3"];
+const smallFieldX = ["x7.2", "x4.8", "x3.2", "x2.1", "x1.4"];
 
 let gameStarted = false;
 let gameOver = false;
@@ -75,10 +80,33 @@ function fieldButtonsState(isEnabled) {
 }
 
 
+function bigFieldXF(){
+    for(let i = 0; i <= 9; i++){
+        const paragraph =document.createElement("p");
+        xContainer.appendChild(paragraph);
+        paragraph.innerText = bigFieldX[i];
+    }
+}
+function mediumFieldXF(){
+    for (let i = 0; i<=7; i++){
+        const paragraph =document.createElement("p");
+        xContainer.appendChild(paragraph);
+        paragraph.innerText = mediumFieldX[i];
+    }
+}
+function smallFieldXF(){
+    for (let i = 0; i<=4; i++){
+        const paragraph =document.createElement("p");
+        xContainer.appendChild(paragraph);
+        paragraph.innerText = smallFieldX[i];
+    }
+}
+
 bigBtn.addEventListener("click", function(){
     if(smallFieldCreated === "true" || mediumFieldCreated === "true"){
         gameContent.innerHTML = "";
         contentGenerator();
+        bigFieldXF();
         smallFieldCreated = "false";
         mediumFieldCreated = "false";
         bigFieldCreated = "true";
@@ -89,6 +117,7 @@ bigBtn.addEventListener("click", function(){
     }
     if (bigFieldCreated === "false"){
         contentGenerator();
+        bigFieldXF();
         bigFieldCreated = "true";
         return;
     }  
@@ -110,6 +139,7 @@ mediumBtn.addEventListener("click", function(){
     if (mediumFieldCreated === "false"){
         gameContent.innerHTML = "";
         mediumBtnF();
+        mediumFieldXF();
         mediumFieldCreated = "true";
     }  
 });
@@ -130,7 +160,7 @@ smallBtn.addEventListener("click", function(){
     if (smallFieldCreated === "false"){
         smallFieldCreated = "true";
         smallBtnF();
-
+        smallFieldXF();
         return;
     }
 });
@@ -203,6 +233,7 @@ cashOutBtn.addEventListener("click", function(){
         minusBtn.disabled = false;
         plusBtn.disabled = false;
         cashOutBtn.disabled = true;
+        fieldButtonsState(true, true, true);
         updateBalance();
 
     }
