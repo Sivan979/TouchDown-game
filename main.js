@@ -68,6 +68,12 @@ function updateProfit(profits) {
 }
 
 
+function fieldButtonsState(isEnabled) {
+    bigBtn.disabled = !isEnabled;
+    mediumBtn.disabled = !isEnabled;
+    smallBtn.disabled = !isEnabled;
+}
+
 
 bigBtn.addEventListener("click", function(){
     if(smallFieldCreated === "true" || mediumFieldCreated === "true"){
@@ -124,6 +130,7 @@ smallBtn.addEventListener("click", function(){
     if (smallFieldCreated === "false"){
         smallFieldCreated = "true";
         smallBtnF();
+
         return;
     }
 });
@@ -132,7 +139,7 @@ smallBtn.addEventListener("click", function(){
 
 playbtn.addEventListener("click", function () {
     if(balance < betAmounts[currentBetIndex]){
-        alert("no enugh balance");
+        alert("no enugh balance, refreash the page to reset your balance to 5EUR");
         return;
     }
     if(bigFieldCreated === "true"){
@@ -150,6 +157,7 @@ playbtn.addEventListener("click", function () {
         // Clear the game area and regenerate content
         gameContent.innerHTML= "";
         contentGenerator();
+        fieldButtonsState(false, false, false);
     } else if (mediumFieldCreated === "true"){
         gameStarted = true;
         gameOver = false;
@@ -164,6 +172,7 @@ playbtn.addEventListener("click", function () {
         // Clear the game area and regenerate content
         gameContent.innerHTML= "";
         mediumBtnF();
+        fieldButtonsState(false, false, false);
     } else if(smallFieldCreated === "true"){
         gameStarted = true;
         gameOver = false;
@@ -177,7 +186,8 @@ playbtn.addEventListener("click", function () {
         plusBtn.disabled = true;
         // Clear the game area and regenerate content
         gameContent.innerHTML= "";
-        smallBtnF();
+        smallBtnF(); 
+        fieldButtonsState(false, false, false);       
     }
     
 });
@@ -369,6 +379,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             minusBtn.disabled = false;
             plusBtn.disabled = false;
             cashOutBtn.disabled = true;
+            fieldButtonsState(true, true, true);
 
             return;
         } else {
@@ -396,6 +407,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             balance = balance + profits;
             cashOutBtn.disabled = true;
             updateBalance();
+            fieldButtonsState(true, true, true);
             return;
         }
     }
@@ -421,6 +433,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             minusBtn.disabled = false;
             plusBtn.disabled = false;
             cashOutBtn.disabled = true;
+            fieldButtonsState(true, true, true);
 
             return;
         } else {
@@ -448,6 +461,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             balance = balance + profits;
             cashOutBtn.disabled = true;
             updateBalance();
+            fieldButtonsState(true, true, true);
             return;
         }
     }
@@ -483,6 +497,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             minusBtn.disabled = false;
             plusBtn.disabled = false;
             cashOutBtn.disabled = true;
+            fieldButtonsState(true, true, true);
 
             return;
         } else {
@@ -513,6 +528,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             balance = balance + profits;
             cashOutBtn.disabled = true;
             updateBalance();
+            fieldButtonsState(true, true, true);
             return;
         }
     }

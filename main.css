@@ -38,9 +38,9 @@ body{
     border-style: solid;
 }
 .game-content-div{
-    display: grid;  /* Ensures the game content area is also flex */
-    grid-template-columns: 210px; /* Aligns all rows vertically */
-    align-items: center; /* Centers rows within the game content area */
+    display: grid;
+    grid-template-columns: 210px;
+    align-items: center;
     row-gap: 10px;
     margin: 6px 0px;
     height: 390px;
