@@ -79,8 +79,8 @@ function fieldButtonsState(isEnabled) {
     smallBtn.disabled = !isEnabled;
 }
 
-
 function bigFieldXF(){
+    xContainer.innerHTML = "";
     for(let i = 0; i <= 9; i++){
         const paragraph =document.createElement("p");
         xContainer.appendChild(paragraph);
@@ -88,6 +88,7 @@ function bigFieldXF(){
     }
 }
 function mediumFieldXF(){
+    xContainer.innerHTML = "";
     for (let i = 0; i<=7; i++){
         const paragraph =document.createElement("p");
         xContainer.appendChild(paragraph);
@@ -95,6 +96,7 @@ function mediumFieldXF(){
     }
 }
 function smallFieldXF(){
+    xContainer.innerHTML = "";
     for (let i = 0; i<=4; i++){
         const paragraph =document.createElement("p");
         xContainer.appendChild(paragraph);
@@ -106,10 +108,10 @@ bigBtn.addEventListener("click", function(){
     if(smallFieldCreated === "true" || mediumFieldCreated === "true"){
         gameContent.innerHTML = "";
         contentGenerator();
-        bigFieldXF();
         smallFieldCreated = "false";
         mediumFieldCreated = "false";
         bigFieldCreated = "true";
+        bigFieldXF();
         return;
     }
     if(bigFieldCreated === "true"){
@@ -117,8 +119,8 @@ bigBtn.addEventListener("click", function(){
     }
     if (bigFieldCreated === "false"){
         contentGenerator();
-        bigFieldXF();
         bigFieldCreated = "true";
+        bigFieldXF();
         return;
     }  
 });
@@ -131,6 +133,7 @@ mediumBtn.addEventListener("click", function(){
         smallFieldCreated = "false";
         bigFieldCreated = "false";
         mediumFieldCreated = "true";
+        mediumFieldXF();
         return;
     }
     if(mediumFieldCreated === "true"){
@@ -139,8 +142,8 @@ mediumBtn.addEventListener("click", function(){
     if (mediumFieldCreated === "false"){
         gameContent.innerHTML = "";
         mediumBtnF();
-        mediumFieldXF();
         mediumFieldCreated = "true";
+        mediumFieldXF();
     }  
 });
 
@@ -152,6 +155,7 @@ smallBtn.addEventListener("click", function(){
         bigFieldCreated = "false";
         mediumFieldCreated = "false";
         smallFieldCreated = "true";
+        smallFieldXF();
         return;
     }
     if(smallFieldCreated === "true"){
@@ -187,7 +191,9 @@ playbtn.addEventListener("click", function () {
         // Clear the game area and regenerate content
         gameContent.innerHTML= "";
         contentGenerator();
+        bigFieldXF();
         fieldButtonsState(false, false, false);
+
     } else if (mediumFieldCreated === "true"){
         gameStarted = true;
         gameOver = false;
@@ -202,7 +208,9 @@ playbtn.addEventListener("click", function () {
         // Clear the game area and regenerate content
         gameContent.innerHTML= "";
         mediumBtnF();
+        mediumFieldXF();
         fieldButtonsState(false, false, false);
+
     } else if(smallFieldCreated === "true"){
         gameStarted = true;
         gameOver = false;
@@ -217,6 +225,7 @@ playbtn.addEventListener("click", function () {
         // Clear the game area and regenerate content
         gameContent.innerHTML= "";
         smallBtnF(); 
+        smallFieldXF();
         fieldButtonsState(false, false, false);       
     }
     

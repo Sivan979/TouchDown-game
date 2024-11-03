@@ -114,12 +114,14 @@ body{
     margin-top: 71px;
     padding: 12px 0px 12px 0px;
     width: 25px;
-    gap: 26px;
+    gap: 0px;
     display: flex;
     flex-direction: column;
     border: 1.2px solid black;
     border-radius: 20px;
+    justify-content: space-between;
     align-items: center;
+    height: 375px;
 
 }
 .x-container p{
@@ -129,7 +131,6 @@ body{
     font-size: 12px;
     font-weight: 600;
     cursor:default;
-
 }
 .cash-out-btn{
     padding: 8px 5px;
