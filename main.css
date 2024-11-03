@@ -39,16 +39,18 @@ body{
 }
 .game-content-div{
     display: grid;  /* Ensures the game content area is also flex */
-    grid-template-columns: 1fr; /* Aligns all rows vertically */
+    grid-template-columns: 210px; /* Aligns all rows vertically */
     align-items: center; /* Centers rows within the game content area */
     row-gap: 10px;
     margin: 6px 0px;
+    height: 390px;
 }
 .row{
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 0 7px;
+    height: 100%;
 }
 
 .h2-second{
@@ -61,8 +63,8 @@ body{
 .game-block{
     position: relative;
     cursor: grab;
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
 }
 .front-game-block ,.back-game-block{
     object-fit: contain;
