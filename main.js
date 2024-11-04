@@ -78,6 +78,16 @@ function fieldButtonsState(isEnabled) {
     mediumBtn.disabled = !isEnabled;
     smallBtn.disabled = !isEnabled;
 }
+function flipAllBlocks() {
+    // Select all game blocks in all rows
+    const allBlocks = document.querySelectorAll('.game-block');
+    // Add the "flip-block" class to each block
+    allBlocks.forEach(block => {
+        block.classList.add("flip-block");
+    });
+}
+
+
 
 function bigFieldXF(){
     xContainer.innerHTML = "";
@@ -243,6 +253,7 @@ cashOutBtn.addEventListener("click", function(){
         plusBtn.disabled = false;
         cashOutBtn.disabled = true;
         fieldButtonsState(true, true, true);
+        flipAllBlocks();
         updateBalance();
 
     }
@@ -257,6 +268,7 @@ function smallBtnF(){
         const rowDiv = document.createElement("div");
         rowDiv.classList.add("row");
         gameContent.appendChild(rowDiv);
+
 
         // Add an attribute to track if the ball image has been placed in this row
         rowDiv.setAttribute("data-ball-placed", "false");
@@ -279,13 +291,21 @@ function smallBtnF(){
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
-            console.log("befor gameblock");
             gameBlock.addEventListener('click', function() {
                 if (gameStarted && !gameOver) {
-                    console.log("inside if ");
+                    if(rowIndex === activeRowIndexS){
+                        // Select all game blocks within the clicked block's row
+                        const rowBlocks = rowDiv.querySelectorAll('.game-block');
+                        // Apply the "flip-block" class to each block in this row
+                        rowBlocks.forEach(block => {
+                            block.classList.add("flip-block");
+                        });
+                    }
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
+                    console.log(rowIndex , activeRowIndexS);
                 }
             });
+            
         }
         
         const randomBlockIndex = Math.floor(Math.random() * blocksPerRow);
@@ -329,6 +349,10 @@ function mediumBtnF(){
 
             gameBlock.addEventListener('click', function() {
                 if (gameStarted && !gameOver) {
+                    const rowBlocks = rowDiv.querySelectorAll('.game-block');
+                    rowBlocks.forEach(block => {
+                        block.classList.add("flip-block");
+                    });
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
                 }
             });
@@ -375,6 +399,10 @@ function contentGenerator() {
             gameBlock.addEventListener('click', function() {
                 console.log("inside gameblock");
                 if (gameStarted && !gameOver) {
+                    const rowBlocks = rowDiv.querySelectorAll('.game-block');
+                    rowBlocks.forEach(block => {
+                        block.classList.add("flip-block");
+                    });
                     console.log("gig");
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
                 }
@@ -420,8 +448,9 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             plusBtn.disabled = false;
             cashOutBtn.disabled = true;
             fieldButtonsState(true, true, true);
-
+            flipAllBlocks();
             return;
+
         } else {
             frontGameBlock.src = './images/ball.avif';
             rowDiv.setAttribute("data-ball-placed", "true");
@@ -474,8 +503,9 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             plusBtn.disabled = false;
             cashOutBtn.disabled = true;
             fieldButtonsState(true, true, true);
-
+            flipAllBlocks();
             return;
+
         } else {
             frontGameBlock.src = './images/ball.avif';
             rowDiv.setAttribute("data-ball-placed", "true");
@@ -538,7 +568,7 @@ function handleBlockClick(frontGameBlock, rowDiv, rowIndex) {
             plusBtn.disabled = false;
             cashOutBtn.disabled = true;
             fieldButtonsState(true, true, true);
-
+            flipAllBlocks();
             return;
         } else {
             frontGameBlock.src = './images/ball.avif';
