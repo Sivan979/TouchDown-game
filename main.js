@@ -87,6 +87,14 @@ function flipAllBlocks() {
     });
 }
 
+function setDefaultField() {
+    if (bigFieldCreated === "false" && mediumFieldCreated === "false" && smallFieldCreated === "false") {
+        contentGenerator();
+        bigFieldXF();
+        bigFieldCreated = "true";
+    }
+}
+setDefaultField();
 
 
 function bigFieldXF(){
@@ -215,7 +223,6 @@ playbtn.addEventListener("click", function () {
         playbtn.disabled = true;
         minusBtn.disabled = true;
         plusBtn.disabled = true;
-        // Clear the game area and regenerate content
         gameContent.innerHTML= "";
         mediumBtnF();
         mediumFieldXF();
@@ -232,7 +239,6 @@ playbtn.addEventListener("click", function () {
         playbtn.disabled = true;
         minusBtn.disabled = true;
         plusBtn.disabled = true;
-        // Clear the game area and regenerate content
         gameContent.innerHTML= "";
         smallBtnF(); 
         smallFieldXF();
@@ -270,9 +276,7 @@ function smallBtnF(){
         gameContent.appendChild(rowDiv);
 
 
-        // Add an attribute to track if the ball image has been placed in this row
         rowDiv.setAttribute("data-ball-placed", "false");
-        // Array to keep track of block elements in the current row
         const currentRowBlocks = [];
 
         for(let blockIndex = 1; blockIndex <= blocksPerRow; blockIndex++){
@@ -294,9 +298,7 @@ function smallBtnF(){
             gameBlock.addEventListener('click', function() {
                 if (gameStarted && !gameOver) {
                     if(rowIndex === activeRowIndexS){
-                        // Select all game blocks within the clicked block's row
                         const rowBlocks = rowDiv.querySelectorAll('.game-block');
-                        // Apply the "flip-block" class to each block in this row
                         rowBlocks.forEach(block => {
                             block.classList.add("flip-block");
                         });
@@ -324,9 +326,7 @@ function mediumBtnF(){
         rowDiv.classList.add("row");
         gameContent.appendChild(rowDiv);
 
-        // Add an attribute to track if the ball image has been placed in this row
         rowDiv.setAttribute("data-ball-placed", "false");
-        // Array to keep track of block elements in the current row
         const currentRowBlocks = [];
 
         for(let blockIndex = 1; blockIndex <= blocksPerRow; blockIndex++){
@@ -349,10 +349,12 @@ function mediumBtnF(){
 
             gameBlock.addEventListener('click', function() {
                 if (gameStarted && !gameOver) {
-                    const rowBlocks = rowDiv.querySelectorAll('.game-block');
-                    rowBlocks.forEach(block => {
-                        block.classList.add("flip-block");
-                    });
+                    if(rowIndex === activeRowIndexM){
+                        const rowBlocks = rowDiv.querySelectorAll('.game-block');
+                        rowBlocks.forEach(block => {
+                            block.classList.add("flip-block");
+                        });
+                    }
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
                 }
             });
@@ -399,10 +401,14 @@ function contentGenerator() {
             gameBlock.addEventListener('click', function() {
                 console.log("inside gameblock");
                 if (gameStarted && !gameOver) {
-                    const rowBlocks = rowDiv.querySelectorAll('.game-block');
-                    rowBlocks.forEach(block => {
-                        block.classList.add("flip-block");
-                    });
+                    if(rowIndex === activeRowIndex){
+                        // Select all game blocks within the clicked block's row
+                        const rowBlocks = rowDiv.querySelectorAll('.game-block');
+                        // Apply the "flip-block" class to each block in this row
+                        rowBlocks.forEach(block => {
+                            block.classList.add("flip-block");
+                        });
+                    }
                     console.log("gig");
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
                 }
