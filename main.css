@@ -111,8 +111,8 @@ body{
     border-color: rgba(0, 0, 0, 0.784);
     cursor: pointer;
 }
-.minus-btn:hover, .plus-btn:hover{
-    background-color: rgb(209, 209, 209);
+.minus-btn:hover, .plus-btn:hover, .field-btn-container button:hover{
+    background-color: rgb(217, 217, 217);
 }
 
 
@@ -155,4 +155,24 @@ body{
     gap: 5px;
     justify-content: center;
     align-items:center;
+}
+
+.field-btn-container{
+    margin-top: 10px;
+    margin-right: 10px;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    justify-content: center;
+}
+.field-btn-container button{
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+.betting-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

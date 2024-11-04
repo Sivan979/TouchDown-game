@@ -190,8 +190,12 @@ smallBtn.addEventListener("click", function(){
 
 
 playbtn.addEventListener("click", function () {
+    if (balance === 0){
+        alert("No balance, refreash the page to reset your balance to 5 EUR");
+        return;
+    }
     if(balance < betAmounts[currentBetIndex]){
-        alert("no enugh balance, refreash the page to reset your balance to 5EUR");
+        alert("No enugh balance");
         return;
     }
     if(bigFieldCreated === "true"){
