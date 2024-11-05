@@ -308,7 +308,6 @@ function smallBtnF(){
                         });
                     }
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
-                    console.log(rowIndex , activeRowIndexS);
                 }
             });
             
@@ -349,7 +348,6 @@ function mediumBtnF(){
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
-            console.log("befor gameblock");
 
             gameBlock.addEventListener('click', function() {
                 if (gameStarted && !gameOver) {
@@ -400,10 +398,8 @@ function contentGenerator() {
             rowDiv.appendChild(gameBlock);
             
             currentRowBlocks.push(frontGameBlock);
-            console.log("befor gameblock");
 
             gameBlock.addEventListener('click', function() {
-                console.log("inside gameblock");
                 if (gameStarted && !gameOver) {
                     if(rowIndex === activeRowIndex){
                         // Select all game blocks within the clicked block's row
@@ -413,7 +409,6 @@ function contentGenerator() {
                             block.classList.add("flip-block");
                         });
                     }
-                    console.log("gig");
                     handleBlockClick(frontGameBlock, rowDiv, rowIndex);
                 }
             });
